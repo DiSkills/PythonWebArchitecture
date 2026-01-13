@@ -43,3 +43,16 @@ class Batch:
 
     def __hash__(self):
         return hash(self.reference)
+
+    def __gt__(self, other):
+        if self.eta is None:
+            return False
+        if other.eta is None:
+            return True
+        return self.eta > other.eta
+
+
+def allocate(line: OrderLine, batches: list[Batch]) -> str:
+    batch = next(b for b in sorted(batches) if b.can_allocate(line))
+    batch.allocate(line)
+    return batch.reference
