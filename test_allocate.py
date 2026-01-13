@@ -1,6 +1,8 @@
 from datetime import date, timedelta
 
-from model import Batch, OrderLine, allocate
+import pytest
+
+from model import Batch, OrderLine, allocate, OutOfStock
 
 today = date.today()
 tomorrow = today + timedelta(days=1)
@@ -36,3 +38,13 @@ def test_returns_allocated_batch_reference():
 
     allocation = allocate(line, [shipment_batch, in_stock_batch])
     assert allocation == in_stock_batch.reference
+
+
+def test_raises_out_of_stock_exception_if_cannot_allocate():
+    batch = Batch("batch-001", "SMALL-FORK", 10, eta=today)
+    line = OrderLine("oref1", "SMALL-FORK", 10)
+    allocate(line, [batch])
+
+    with pytest.raises(OutOfStock, match="SMALL-FORK"):
+        line = OrderLine("oref2", "SMALL-FORK", 1)
+        allocate(line, [batch])
