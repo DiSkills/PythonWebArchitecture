@@ -36,6 +36,9 @@ class Batch:
     def can_allocate(self, line: OrderLine) -> bool:
         return self.sku == line.sku and self.available_quantity >= line.qty
 
+    def __repr__(self):
+        return f"<Batch {self.reference}>"
+
     def __eq__(self, other):
         if not isinstance(other, Batch):
             return False
@@ -52,7 +55,14 @@ class Batch:
         return self.eta > other.eta
 
 
+class OutOfStock(Exception):
+    pass
+
+
 def allocate(line: OrderLine, batches: list[Batch]) -> str:
-    batch = next(b for b in sorted(batches) if b.can_allocate(line))
-    batch.allocate(line)
-    return batch.reference
+    try:
+        batch = next(b for b in sorted(batches) if b.can_allocate(line))
+        batch.allocate(line)
+        return batch.reference
+    except StopIteration:
+        raise OutOfStock(f"Out of stock for sku {line.sku}")
