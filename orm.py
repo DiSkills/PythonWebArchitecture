@@ -1,9 +1,10 @@
 from sqlalchemy import Table, MetaData, Column, Integer, String, Date, ForeignKey
-from sqlalchemy.orm import mapper, relationship
+from sqlalchemy.orm import registry, relationship
 
 import model
 
 metadata = MetaData()
+mapper = registry().map_imperatively
 
 order_lines = Table(
     "order_lines", metadata,
