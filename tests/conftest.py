@@ -1,12 +1,12 @@
 import pytest
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, Engine
 from sqlalchemy.orm import sessionmaker, clear_mappers
 
 from orm import metadata, start_mappers
 
 
 @pytest.fixture
-def in_memory_db():
+def in_memory_db() -> Engine:
     engine = create_engine("sqlite:///:memory:")
     metadata.create_all(engine)
     return engine
