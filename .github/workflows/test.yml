@@ -1,0 +1,23 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Install Dependencies
+        run: pip install poetry && poetry install --no-root
+      - name: Mypy
+        run: poetry run mypy .
+      - name: PyTest
+        run: poetry run pytest
