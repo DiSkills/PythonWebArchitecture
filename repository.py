@@ -1,4 +1,6 @@
-import abc
+﻿import abc
+
+from sqlalchemy.orm import Session
 
 import model
 
@@ -12,16 +14,22 @@ class AbstractRepository(abc.ABC):
     def get(self, reference: str) -> model.Batch:
         raise NotImplementedError
 
+    @abc.abstractmethod
+    def list(self) -> list[model.Batch]:
+        raise NotImplementedError
+
 
 class SqlAlchemyRepository(AbstractRepository):
-    def __init__(self, session):
+    def __init__(self, session: Session):
         self.session = session
 
-    def add(self, batch):
+    def add(self, batch: model.Batch):
         self.session.add(batch)
 
-    def get(self, reference):
+    def get(self, reference: str) -> model.Batch:
+        # noinspection PyTypeChecker
         return self.session.query(model.Batch).filter_by(reference=reference).one()
 
-    def list(self):
+    def list(self) -> list[model.Batch]:
+        # noinspection PyTypeChecker
         return self.session.query(model.Batch).all()
