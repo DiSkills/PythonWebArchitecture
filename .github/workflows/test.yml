@@ -9,6 +9,14 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    services:
+      database:
+        image: postgres:18.1
+        env:
+          POSTGRES_USER: allocation
+          POSTGRES_PASSWORD: password
+        ports:
+          - "5432:5432"
     steps:
       - uses: actions/checkout@v5
       - name: Setup Python
