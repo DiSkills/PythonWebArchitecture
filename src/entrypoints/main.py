@@ -7,12 +7,12 @@ from pydantic import BaseModel
 from sqlalchemy import create_engine
 from sqlalchemy.orm import clear_mappers, sessionmaker
 
-import config
-from adapters import repository
-from adapters.orm import start_mappers
-from domain import model
-from schemas import Message
-from service_layer import services
+from src import config
+from src.adapters import repository
+from src.adapters.orm import start_mappers
+from src.domain import model
+from src.schemas import Message
+from src.service_layer import services
 
 
 @asynccontextmanager

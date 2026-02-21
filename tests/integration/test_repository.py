@@ -1,8 +1,8 @@
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
-from adapters.repository import SqlAlchemyRepository
-from domain.model import Batch, OrderLine
+from src.adapters.repository import SqlAlchemyRepository
+from src.domain.model import Batch, OrderLine
 
 
 def test_repository_can_save_a_batch(session):

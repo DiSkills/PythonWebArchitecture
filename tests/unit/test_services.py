@@ -1,7 +1,7 @@
 import pytest
 
-from adapters.repository import FakeRepository
-from service_layer import services
+from src.adapters.repository import FakeRepository
+from src.service_layer import services
 
 
 class FakeSession:
