@@ -44,10 +44,9 @@ class AllocateEndpointResponse(BaseModel):
 def allocate_endpoint(request: AllocateEndpointRequest):
     session = get_session()
     repo = repository.SqlAlchemyRepository(session)
-    line = model.OrderLine(request.orderid, request.sku, request.qty)
 
     try:
-        batchref = services.allocate(line, repo, session)
+        batchref = services.allocate(request.orderid, request.sku, request.qty, repo, session)
     except (model.OutOfStock, services.InvalidSku) as e:
         return JSONResponse({"message": str(e)}, status_code=400)
     return {"batchref": batchref}
