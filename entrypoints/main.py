@@ -1,4 +1,5 @@
 from contextlib import asynccontextmanager
+from datetime import date
 
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
@@ -50,3 +51,19 @@ def allocate_endpoint(request: AllocateEndpointRequest):
     except (model.OutOfStock, services.InvalidSku) as e:
         return JSONResponse({"message": str(e)}, status_code=400)
     return {"batchref": batchref}
+
+
+class AddBatchEndpointRequest(BaseModel):
+    ref: str
+    sku: str
+    qty: int
+    eta: None | date
+
+
+@app.post("/add_batch", status_code=201, response_model=Message)
+def add_batch_endpoint(request: AddBatchEndpointRequest):
+    session = get_session()
+    repo = repository.SqlAlchemyRepository(session)
+
+    services.add_batch(request.ref, request.sku, request.qty, request.eta, repo, session)
+    return {"message": "ok"}
