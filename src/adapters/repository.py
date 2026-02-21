@@ -2,7 +2,7 @@
 
 from sqlalchemy.orm import Session
 
-from domain.model import Batch
+from src.domain.model import Batch
 
 
 class AbstractRepository(abc.ABC):

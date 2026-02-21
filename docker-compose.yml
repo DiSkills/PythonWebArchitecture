@@ -1,0 +1,19 @@
+services:
+  database:
+    image: postgres:18.1
+    environment:
+      - POSTGRES_USER=allocation
+      - POSTGRES_PASSWORD=password
+    ports:
+      - "5432:5432"
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - database
+    environment:
+      - DB_HOST=database
+    ports:
+      - "8000:8000"
