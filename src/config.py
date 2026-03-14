@@ -1,7 +1,7 @@
 import os
 
 
-def get_postgres_uri():
+def get_postgres_uri() -> str:
     host = os.environ.get("DB_HOST", "localhost")
     port = 5432
     password = os.environ.get("DB_PASSWORD", "password")
@@ -9,7 +9,7 @@ def get_postgres_uri():
     return f"postgresql://{user}:{password}@{host}:{port}/{name}"
 
 
-def get_api_url():
+def get_api_url() -> str:
     host = os.environ.get("API_HOST", "localhost")
     port = 8000 if host == "localhost" else 80
     return f"http://{host}:{port}"
